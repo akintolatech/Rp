@@ -1,0 +1,244 @@
+{% load static %}
+{% load custom_filter %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Datasheet</title>
+    <link type="image/x-icon" href="../img/afit.ico" rel="icon" />
+    <link type="text/css" href="../styles/style.css" rel="stylesheet" />
+    <link type="text/css" href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link type="image/x-icon" href="{% static 'img/afit.ico' %}" rel="icon" />
+</head>
+<body>
+        <div id="header">
+
+            <div class="header_wrap">
+            <!--<h4>Computer Based Test: Python {{ test.name }} </h4>-->
+                <div class="logo">
+                    <img src="{% static 'img/afit.png' %}" alt="AFIT Logo" />
+                </div>
+
+                <div class="btn-container">
+                    <button id="print" style="width: 150px; margin: 0 10px;">Print</button>
+
+                    <a href="{% url 'logout' %}">
+                        <button class="head-btn">Log Out</button>
+                    </a>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="head-pad"></div>
+
+
+        <div class="datasheet">
+            <center>
+
+
+            <div class="result-head">
+
+
+                <div class="result-head-text">
+                <div class="result-logo">
+                        <img src="{% static 'img/afit.png' %}" alt="AFIT Logo" width="100%"/>
+                </div>
+
+
+                    <div class="result-header">
+                        <h1 style="font-size: 18pt;" class="font-format">School of Basic and Remedial Studies<br/>Osogbo Centre</h1>
+                        <h2 style="font-size: 14pt;" class="font-format">Air Force Institute of Technology Kaduna - Nigeria </h2>
+
+                    </div>
+
+                    <div class="acad-session">
+                        <h4>First Semester Result</h4>
+                        <h4>2023/2024 Session</h4>
+                    </div>
+
+                </div>
+
+            </div>
+
+            </center>
+
+            <table border="1px" style="border-collapse: collapse;">
+
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="writing-mode: sideways-lr;
+                                   text-orientation: sideways;">Serial</th>
+                        <th rowspan="2">Student's No</th>
+                        <th rowspan="2">Name</th>
+                        
+<!--                        <th colspan="4">Economics</th>-->
+
+                        {% for subject in subjects %}
+                            <th colspan="4">{{ subject.name }}</th>
+                        {% endfor %}
+
+                        <th rowspan="2" style="writing-mode: sideways-lr;
+                                   text-orientation: sideways;">Grade</th>
+
+                    </tr>
+
+                    <tr>
+
+                    {% for _ in subjects %}
+                    
+
+                        <th style="writing-mode: sideways-lr;
+                                   text-orientation: sideways;"
+                        >
+                            CAT 1
+                        </th>
+
+
+                        <th style="writing-mode: sideways-lr;
+                                   text-orientation: sideways;"
+                        >
+                            CAT 2
+                        </th>
+
+
+                        <th style="writing-mode: sideways-lr;
+                                   text-orientation: sideways;"
+                        >
+                            Exam
+                        </th>
+
+                        <th style="writing-mode:sideways-lr;
+                                   text-orientation: sideways;"
+                        >
+                            Total
+                        </th>
+
+                    {% endfor %}
+                    </tr>
+
+                    <tr>
+                        <th>(a)</th>
+                        <th>(b)</th>
+                        <th>(c)</th>
+                        <th>(d)</th>
+                        <th>(e)</th>
+                        <th>(f)</th>
+                        <th>(g)</th>
+                        <th>(h)</th>
+                        <th>(i)</th>
+                        <th>(j)</th>
+                        <th>(k)</th>
+                        <th>(l)</th>
+                        <th>(m)</th>
+                        <th>(n)</th>
+                        <th>(o)</th>
+                        <th>(p)</th>
+                        <th>(q)</th>
+                        <th>(r)</th>
+                        <th>(s)</th>
+                        <th>(t)</th>
+                        <th>(u)</th>
+                        <th>(v)</th>
+                        <th>(w)</th>
+                        <th>(x)</th>
+                        <th>(y)</th>
+                        <th>(z)</th>
+                        <th>(aa)</th>
+                        <th>(ab)</th>
+                        <th>(ac)</th>
+                        <th>(ad)</th>
+                        <th>(ae)</th>
+                        <th>(af)</th>
+                        <th>(ag)</th>
+                        <th>(ah)</th>
+                        <th>(ai)</th>
+                        <th>(aj)</th>
+                        <th>(ak)</th>
+                        <th>(al)</th>
+                        <th>(am)</th>
+                        <th>(an)</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for student in all_students  %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ student.student_no }}</td>
+                        <td style="text-align: left;">
+                                {{ student.name }}
+                            </td>
+                        
+
+                        {% for subject in subjects %}
+                        <!-- Retrieve the result for the current student and subject -->
+                        {% with result=results|get_result:student.id|get_result_subject:subject.id %}
+                        <td>
+                            {% if result %}
+                            {{ result.cat1 }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result %}
+                            {{ result.cat2 }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result %}
+                            {{ result.exam }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result %}
+                            {{ result.total }}
+                            {% endif %}
+                        </td>
+                        {% endwith %}
+                        {% endfor %}
+
+                        <td>{{ student.total_grade }}</td>
+
+                    </tr>
+                    {% endfor  %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+</body>
+</html>
+
+<style>
+
+
+    @media print {
+        /* Change page orientation to landscape */
+        @page {
+            size: landscape;
+        }
+
+        /* Additional styles for printed content */
+        table {
+            /* Example: Adjust font size for better readability on print */
+            font-size: 8pt;
+
+        }
+    }
+</style>
+
+<script>
+    // Add an event listener to the button
+    document.getElementById("print").addEventListener("click", function() {
+        // Trigger the browser's print function
+        window.print();
+    });
+</script>

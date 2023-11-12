@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Checker</title>
+     <link type="text/css" href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link type="image/x-icon" href="{% static 'img/afit.ico' %}" rel="icon" />
+</head>
+<body>
+
+<!--<div id="header">-->
+<!--    <div class="header_wrap">-->
+<!--    &lt;!&ndash;<h4>Computer Based Test: Python {{ test.name }} </h4>&ndash;&gt;-->
+<!--        <div class="logo">-->
+<!--            <img src="{% static 'img/afit.png' %}" alt="AFIT Logo" />-->
+<!--        </div>-->
+
+
+
+<!--        <div class="btn-container">-->
+<!--            <a href="{% url 'logout' %}">-->
+<!--                <button class="head-btn">Log Out</button>-->
+<!--            </a>-->
+
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="head-pad"></div>-->
+
+
+<h1>Result Checker</h1>
+<div class="verizon" style="margin-top: 40px;">
+
+<!--    <div class="verify">-->
+
+<!--        <div class="verify-box">-->
+<!--        <center style="margin: 0; padding: 0;">-->
+<!--            {% if student_match %}-->
+
+<!--            <p>Verification Successful:</p>-->
+<!--            <img src="{{ student_match.photo.url }}" />-->
+<!--            <p>Name: {{ student_match }}</p>-->
+<!--            <p>Total Score: {{ student_match.total_score }}</p>-->
+<!--            <p>Remarks: {{ student_match.total_remark }}</p>-->
+
+<!--            {%else%}-->
+<!--            <p>Add a Valid Hash</p>-->
+<!--            {% endif %}-->
+<!--        </center>-->
+<!--        </div>-->
+<!--       -->
+<!--    </div>-->
+    <center>
+    {% if error %}
+    <p style="color:red; margin: 0;">{{ error }}</p>
+    {% endif %}
+    </center>
+
+    <form method="post">
+        {% csrf_token %}
+        <center>
+
+            <input type="text"
+                   name="check"
+                    style="width: 300px;"
+                    placeholder="Enter your student number"
+            /> <br/>
+            <button style="width: 150px;">Check result</button>
+        </center>
+    </form>
+
+
+</div>
+
+
+</body>
+</html>

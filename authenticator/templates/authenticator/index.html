@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Processor v0.1</title>
+    <link type="text/css" href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link type="image/x-icon" href="{% static 'img/afit.ico' %}" rel="icon" />
+
+</head>
+<body>
+
+        <div class="container">
+            <div class="item img">
+                <img src="{% static 'img/bar.jpg' %}" />
+            </div>
+
+            <div class="item" height="400px">
+                <h1>Result Processor</h1>
+
+                <form method="post">
+
+                    {% if error %}
+                        <p style="color:red; margin: 0;">{{ error }}</p>
+                    {% endif %}
+
+                    {% csrf_token %}
+                    <input type="text" name="username" id="username" placeholder="Username">
+                    <input type="password" name="password" id="password" placeholder="Password">
+                    <button>Log in</button></a>
+
+                </form>
+
+                <p class="legal">
+                     Developed by Akintola Technologies. &copy <span class="year"></span>
+                </p>
+
+            </div>
+
+        </div>
+
+</body>
+
+
+</html>
+
+<script>
+
+    let year = new Date().getFullYear();
+    let placeholder = document.querySelector('.year');
+    placeholder.textContent = year.toString();
+
+</script>
+

@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Entry</title>
+    <link type="text/css" href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link type="image/x-icon" href="{% static 'img/afit.ico' %}" rel="icon" />
+
+    <script>
+        // Replace the current state with a new state
+        window.history.replaceState(null, document.title, window.location.href);
+
+        // Add a listener for the 'popstate' event
+        window.addEventListener('popstate', function(event) {
+          // Push a new state to forward the user to the next page again
+          window.history.pushState(null, document.title, window.location.href);
+        });
+
+    </script>
+
+</head>
+<body>
+    
+    
+    <div id="main">
+        <div id="header">
+
+            <div class="header_wrap">
+            <!--<h4>Computer Based Test: Python {{ test.name }} </h4>-->
+                <div class="logo">
+                    <img src="{% static 'img/afit.png' %}" alt="AFIT Logo" />
+                </div>
+
+                <a href="{% url 'logout' %}">
+                    <button class="head-btn">Log Out</button>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="head-pad"></div>
+
+        <h2>Welcome, <strong style="color:#088ccd;">{{ name }}</strong></h2>
+        <p>Instructor for: <strong>{{ subject }}</strong></p>
+
+        <div class="datasheet">
+            
+            <form action="{% url 'process' %}" method="post">
+                {% csrf_token %}
+                <table border="1px" style="border-collapse: collapse;">
+
+                    <thead>
+                        <tr>
+                            <th>Serial</th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Student's No</th>
+                            <th>CAT 1</th>
+                            <th>CAT 2</th>
+                            <th>Exam</th>
+                            <th>Total</th>
+                            <th>Grade</th>
+                        </tr>
+
+                        <tr>
+                            <th>(a)</th>
+                            <th>(b)</th>
+                            <th>(c)</th>
+                            <th>(d)</th>
+                            <th>(e)</th>
+                            <th>(f)</th>
+                            <th>(g)</th>
+                            <th>(h)</th>
+                            <th>(i)</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <div style="width: 40px; margin: auto;">
+                                    <img src="{{ student.photo.url }}" width="100%"/>
+
+                                </div>
+                            </td>
+                            <td style="text-align: left;">
+                                <p style="display: inline;
+                                         opacity: 0;
+                                         margin:0;
+                                         padding:0;">***
+                                </p>
+                                {{ student.name }}
+                            </td>
+                            <td>{{ student.student_no }}</td>
+
+
+                            {% for result in results %}
+                                {% if result.student == student %}
+                            <td>
+
+                                <input type="text"
+                                       name="CAT1_{{ student.id }}"
+                                       class="tabledata"
+                                       maxlength="2"
+                                       value="{{ result.cat1 }}"
+                                       required
+                                       pattern="[0-9]+"
+                                />
+
+                            </td>
+                            <td>
+
+                                <input type="text"
+                                       name="CAT2_{{ student.id }}"
+                                       class="tabledata"
+                                       maxlength="2"
+                                       value="{{ result.cat2 }}"
+                                       required
+                                       pattern="[0-9]+"
+                                />
+
+                            </td>
+                            <td>
+
+                                <input type="text"
+                                       name="EXAM_{{ student.id }}"
+                                       class="tabledata"
+                                       maxlength="2"
+                                       value="{{ result.exam }}"
+                                       required
+                                       pattern="[0-9]+"
+                                />
+
+                            </td>
+
+
+
+                            <td>{{ result.total }}</td>
+                            <td>{{ result.grade }}</td>
+                            {% endif %}
+                            {% endfor %}
+                        </tr>
+
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                <!-- <a href="results.html"><button>Save Results</button></a> -->
+                <button>Save Results</button>
+            </form>
+
+
+        </div>
+
+        
+
+    </div>
+
+</body>
+</html>

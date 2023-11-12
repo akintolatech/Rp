@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Viewer</title>
+    <link type="text/css" href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link type="text/css" href="../../../static/styles/style.css" rel="stylesheet" />
+    <link type="image/x-icon" href="{% static 'img/afit.ico' %}" rel="icon" />
+</head>
+<body>
+
+    <div id="header">
+
+        <div class="header_wrap">
+        <!--<h4>Computer Based Test: Python {{ test.name }} </h4>-->
+            <div class="logo">
+                <img src="{% static 'img/afit.png' %}" alt="AFIT Logo" />
+            </div>
+
+            <div class="btn-container">
+
+                <button id="print" style="width: 150px; margin: 0 10px;">Print</button>
+
+                <a href="{% url 'logout' %}">
+                    <button class="head-btn">Log Out</button>
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="head-pad"></div>
+
+    <div id="main">
+
+        <div id="result-container">
+
+            <div class="result-template">
+
+                <div class="result-main">
+
+                    <div class="result-head">
+
+                        <div class="result-logo" style="margin: auto;">
+                                <img src="{% static 'img/afit.png' %}" style="width: 100%;"/>
+                        </div>
+
+                        <div class="result-head-text">
+
+                            <div class="result-header">
+                                <h1 class="font-format">School of Basic and Remedial Studies<br/>Osogbo Centre</h1>
+                                <h2 style="font-size: 10pt;" class="font-format">Air Force Institute of Technology Kaduna - Nigeria </h2>
+                                
+                            </div>
+
+                            <div class="acad-session">
+                                <h4>First Semester Result</h4>
+                                <h4>2023/2024 Academic Session</h4>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr/>
+
+                    <div class="result-details">
+
+                        
+                        <div class="bio">
+                            <div class="result-logo">
+                                <img src="{{ student.photo.url }}" style="width: 100%;"/>
+<!--                                <img src="{{ photo }}" style="width: 100%;"/>-->
+<!--                                <img src="data:image/jpeg;base64,{{ photo }}" style="width: 100%;" />-->
+
+                        </div>
+
+                        <div class="student-data">
+                                <ul>
+                                    <li>Name: {{student.name}}</li>
+                                    <li>Student No: {{student.student_no}}</li>
+                                    <li>Year of Registration: {{student.year}}</li>
+                                    <li>Class: {{student.form}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="result-logo">
+                                <img src="../../{{ student.qr_code }}" style="width: 100%;"/>
+                        </div>
+
+                    </div>
+
+                    <hr/>
+
+                    <table border="1px" style="border-collapse: collapse;">
+
+                        <thead>
+                            <tr>
+                                <th>Serial</th>
+                                <th>Subject</th>
+                                <th>CAT 1</th>
+                                <th>CAT 2</th>
+                                <th>Exams</th>
+                                <th>Total</th>
+                                <th>Grade</th>
+                                <th>Remarks</th>
+                            </tr>
+                            <tr>
+                                <th>(a)</th>
+                                <th>(b)</th>
+                                <th>(c)</th>
+                                <th>(d)</th>
+                                <th>(e)</th>
+                                <th>(f)</th>
+                                <th>(g)</th>
+                                <th>(h)</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for result in results %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td style="text-align: left;">{{ result.subject }}</td>
+                                <td>{{ result.cat1 }}</td>
+                                <td>{{ result.cat2 }}</td>
+                                <td>{{ result.exam }}</td>
+                                <td>{{ result.total }}</td>
+                                <td>{{ result.grade }}</td>
+                                <td style="text-align: left;">{{ result.remark }}</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    <div style="display: flex; justify-content: space-between;">
+
+                            <h5>Current Total Score :  {{ student.total_score }} </h5>
+                            <h5>Current Average Score : {{ student.avg }}</h5>
+
+
+                    </div>
+                    
+                    <div class="signature-container">
+                        <div class="sig-box">
+
+                            <h5>Director's Signature</h5>
+                                
+                            <figure>
+                                <img src="{% static 'img/director.jpeg' %}"/>
+                                <figcaption><h5 class="year"></h5><figcaption>
+                            </figure>
+                           
+                        </div>
+
+                        <div class="sig-box">
+
+                            <h5>Coordinator's Signature</h5>
+
+                            <figure>
+                                <img src="{% static 'img/Coord.jpg' %}"/>
+                                <figcaption><h5 class="year2"></h5><figcaption>
+                            </figure>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <h5>
+                            Coordnator's Remarks:  <u>{{ student.coordinator_remark }}</u>
+                        </h5>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+</body>
+</html>
+
+<script>
+    // Add an event listener to the button
+    document.getElementById("print").addEventListener("click", function() {
+        // Trigger the browser's print function
+        window.print();
+    });
+
+    let currentDate = new Date();
+    let dayOfWeek = currentDate.toLocaleString('en-US', { weekday: 'short' });
+    let month = currentDate.toLocaleString('en-US', { month: 'short' });
+    let day = currentDate.getDate();
+    let year = currentDate.getFullYear();
+
+    let formattedDate = `${dayOfWeek} ${month} ${day} ${year}`;
+
+    let placeholder = document.querySelector('.year');
+    let placeholder2 = document.querySelector('.year2');
+    placeholder.textContent = formattedDate;
+    placeholder2.textContent = formattedDate;
+</script>
+

@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link type="text/css" href="{% static 'styles/style.css' %}" rel="stylesheet" />
+    <link type="image/x-icon" href="{% static 'img/afit.ico' %}" rel="icon" />
+</head>
+<body>
+    
+
+        
+    <div id="main">
+        <div id="header">
+
+            <div class="header_wrap">
+            <!--<h4>Computer Based Test: Python {{ test.name }} </h4>-->
+                <div class="logo">
+                    <img src="{% static 'img/afit.png' %}" alt="AFIT Logo" />
+                </div>
+
+
+
+                <div class="btn-container">
+
+                    <a href="{% url 'verify' %}">
+                        <button style="width: 150px; margin: 0 10px; background-color:#088ccd;" >Verify</button>
+                    </a>
+
+                    <a href="{% url 'export' %}">
+                        <button class="sec-btn" style="width: 150px;" >Export</button>
+                    </a>
+
+                    <a href="{% url 'datasheet' %}">
+                        <button style="width: 150px; margin: 0 10px;" >Datasheet</button>
+                    </a>
+
+                    <a href="{% url 'logout' %}">
+                        <button class="head-btn">Log Out</button>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="head-pad"></div>
+
+        <h2>Welcome <strong style="color:#088ccd;">Administrator {{ name }} </strong></h2>
+
+        <div class="search">
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="text"
+                       name="search"
+                        style="width: 300px;"
+                        placeholder="Search Results"
+                />
+                <button style="width: fit-content;">Search</button>
+            </form>
+
+        </div>
+
+        <div class="datasheet">
+
+                <table border="1px" style="border-collapse: collapse;">
+
+                    <thead>
+                        <tr>
+                            <th>Serial</th>
+                            <th>Photo</th>
+                            <th>Student's Name</th>
+                            <th>Student's No</th>
+                            <th>Avg</th>
+                            <th>Total</th>
+                            <th>Grade</th>
+                            <th>Result</th>
+                            <th>Remarks</th>
+                        </tr>
+
+                        <tr>
+                            <th>(a)</th>
+                            <th>(b)</th>
+                            <th>(c)</th>
+                            <th>(d)</th>
+                            <th>(e)</th>
+                            <th>(f)</th>
+                            <th>(g)</th>
+                            <th>(h)</th>
+                            <th>(i)</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for student in all_students %}
+
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <div style="width: 40px; margin: auto;">
+                                    <img src="{{ student.photo.url }}" width="100%"/>
+                                </div>
+                            </td>
+                            <td style="text-align: left;">
+                                <p style="display: inline;
+                                         opacity: 0;
+                                         margin:0;
+                                         padding:0;">***
+                                </p>
+                                {{ student.name }}
+                            </td>
+                            <td>{{ student.student_no }}</td>
+
+                            <td>
+                                {{ student.avg }}
+                            </td>
+                            <td>
+                                {{ student.total_score }}
+                            </td>
+<!--                            <td>{{ student.total_grade }}</td>-->
+                            <td>{{ student.total_grade }}</td> 
+                            
+                            <td>
+                                <a href="{% url 'viewer' student.id %}">View</a>
+                            </td>
+
+                            <td>{{ student.total_remark }}</td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+        </div>
+
+        
+
+    </div>
+
+
+
+
+</body>
+</html>
